@@ -25,7 +25,7 @@ def update():
     memory = data.get("memory")
     print("memory:", memory)
 
-    msg = f"テスト {memory}%"
+    msg = f"メモリ使用率 {memory}%"
 
     try:
         print("sending to discord...")
