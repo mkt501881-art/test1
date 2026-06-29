@@ -11,25 +11,21 @@ TOKEN = "doingtest"
 def update():
     data = request.json
 
-    if not data:
-        return "bad request", 400
+    print("received:", data)
 
     if data.get("token") != TOKEN:
         return "unauthorized", 403
 
     memory = data.get("memory")
 
-    if memory is None:
-        return "no memory", 400
+    msg = f"テスト {memory}"
 
-    msg = f"💻 メモリ使用率: {memory}%"
-
-try:
-    res = requests.post(WEBHOOK, json={"content": msg})
-    print("status:", res.status_code)
-    print("response:", res.text)
-except Exception as e:
-    print("error:", e)
+    try:
+        res = requests.post(WEBHOOK, json={"content": msg})
+        print("status:", res.status_code)
+        print("response:", res.text)
+    except Exception as e:
+        print("error:", e)
 
     return "ok"
 
