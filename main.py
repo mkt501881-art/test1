@@ -9,24 +9,33 @@ TOKEN = "doingtest"
 
 @app.route("/update", methods=["POST"])
 def update():
-    data = request.json
+    print("=== request received ===")
 
-    print("received:", data)
+    data = request.json
+    print("data:", data)
+
+    if not data:
+        print("no data")
+        return "bad request", 400
 
     if data.get("token") != TOKEN:
+        print("token mismatch")
         return "unauthorized", 403
 
     memory = data.get("memory")
+    print("memory:", memory)
 
-    msg = f"テスト {memory}"
+    msg = f"テスト {memory}%"
 
     try:
+        print("sending to discord...")
         res = requests.post(WEBHOOK, json={"content": msg})
-        print("status:", res.status_code)
-        print("response:", res.text)
+        print("discord status:", res.status_code)
+        print("discord response:", res.text)
     except Exception as e:
-        print("error:", e)
+        print("discord error:", e)
 
+    print("=== finished ===")
     return "ok"
 
 port = int(os.environ.get("PORT", 5000))
